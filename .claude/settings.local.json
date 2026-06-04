@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p ~/.claude/channels/telegram/approved)",
+      "Bash(printf '7663687671')",
+      "mcp__plugin_telegram_telegram__reply",
+      "mcp__plugin_telegram_telegram__download_attachment",
+      "Bash(ssh *)",
+      "Bash(gh repo *)"
+    ]
+  }
+}
