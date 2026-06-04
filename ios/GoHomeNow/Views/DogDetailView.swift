@@ -95,7 +95,7 @@ struct InfoTile: View {
     let value: String
     var body: some View {
         VStack(spacing: 4) {
-            Image(systemName: icon).font(.title2).foregroundStyle(.accentColor)
+            Image(systemName: icon).font(.title2).foregroundStyle(Color.accentColor)
             Text(value).font(.headline)
             Text(label).font(.caption).foregroundStyle(.secondary)
         }
@@ -125,7 +125,7 @@ struct CarePlanRow: View {
     let text: String
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(day).font(.caption).bold().foregroundStyle(.accentColor)
+            Text(day).font(.caption).bold().foregroundStyle(Color.accentColor)
             Text(text).font(.subheadline)
         }
     }
