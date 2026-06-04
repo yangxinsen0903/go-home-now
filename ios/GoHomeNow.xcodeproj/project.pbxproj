@@ -1,0 +1,346 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1553F238232B71433AAC1841 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D564DF70D50F2BFF3EA3AFA6 /* OnboardingView.swift */; };
+		24D5228B4039AAE3B98EC116 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E9D56C5F3FF7B52DDD5C9F /* APIService.swift */; };
+		3AB9CD9C94F00AA08BAF57F0 /* Dog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F370B0B15C3A047FF788A1B /* Dog.swift */; };
+		43254EBF8DD5D0F5F3EEE0AF /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2FDDE8878E1FD852C089C0 /* AppViewModel.swift */; };
+		6DDBC4EBDBBCC282E8320720 /* DogDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */; };
+		9B80FD3C7BF7CA3FC5A8CF46 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */; };
+		9DE6EF8968ECE0BA406270E3 /* GoHomeNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */; };
+		CD03868131EA8D8110714C23 /* DogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE48D9214B6F3EA7801813B /* DogListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		011EA411BDA173640EB0E96C /* GoHomeNow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoHomeNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoHomeNowApp.swift; sourceTree = "<group>"; };
+		0F370B0B15C3A047FF788A1B /* Dog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
+		453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogDetailView.swift; sourceTree = "<group>"; };
+		74E9D56C5F3FF7B52DDD5C9F /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		D564DF70D50F2BFF3EA3AFA6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		EAE48D9214B6F3EA7801813B /* DogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogListView.swift; sourceTree = "<group>"; };
+		ED2FDDE8878E1FD852C089C0 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		F44885BC992F7AF692DE45D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0140604192F676D676041E72 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				74E9D56C5F3FF7B52DDD5C9F /* APIService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		03A706E8B3CB72F898F25F71 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */,
+				EAE48D9214B6F3EA7801813B /* DogListView.swift */,
+				D564DF70D50F2BFF3EA3AFA6 /* OnboardingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		26AFD1536A1BA4C555CD6FE2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				ED2FDDE8878E1FD852C089C0 /* AppViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		416645098E2BF1E4637D6982 /* GoHomeNow */ = {
+			isa = PBXGroup;
+			children = (
+				0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */,
+				F44885BC992F7AF692DE45D7 /* Info.plist */,
+				C1F075BBFD59DB4701D1593B /* Models */,
+				0140604192F676D676041E72 /* Services */,
+				26AFD1536A1BA4C555CD6FE2 /* ViewModels */,
+				03A706E8B3CB72F898F25F71 /* Views */,
+			);
+			path = GoHomeNow;
+			sourceTree = "<group>";
+		};
+		7C0F07ACC6C9026B9A2B19D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				011EA411BDA173640EB0E96C /* GoHomeNow.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1954D15250D7FA0720689E9 = {
+			isa = PBXGroup;
+			children = (
+				416645098E2BF1E4637D6982 /* GoHomeNow */,
+				7C0F07ACC6C9026B9A2B19D7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C1F075BBFD59DB4701D1593B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0F370B0B15C3A047FF788A1B /* Dog.swift */,
+				7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		322ECE5BBC7C93E76EC0BEFF /* GoHomeNow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0EC1694303FBC1DA3D3CC8F /* Build configuration list for PBXNativeTarget "GoHomeNow" */;
+			buildPhases = (
+				3BF352CC5FC2939592AD91EB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GoHomeNow;
+			packageProductDependencies = (
+			);
+			productName = GoHomeNow;
+			productReference = 011EA411BDA173640EB0E96C /* GoHomeNow.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EEF83CCB62AB9B71EEE17594 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 5B971130539155DC254D424E /* Build configuration list for PBXProject "GoHomeNow" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A1954D15250D7FA0720689E9;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7C0F07ACC6C9026B9A2B19D7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				322ECE5BBC7C93E76EC0BEFF /* GoHomeNow */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3BF352CC5FC2939592AD91EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				24D5228B4039AAE3B98EC116 /* APIService.swift in Sources */,
+				43254EBF8DD5D0F5F3EEE0AF /* AppViewModel.swift in Sources */,
+				3AB9CD9C94F00AA08BAF57F0 /* Dog.swift in Sources */,
+				6DDBC4EBDBBCC282E8320720 /* DogDetailView.swift in Sources */,
+				CD03868131EA8D8110714C23 /* DogListView.swift in Sources */,
+				9DE6EF8968ECE0BA406270E3 /* GoHomeNowApp.swift in Sources */,
+				1553F238232B71433AAC1841 /* OnboardingView.swift in Sources */,
+				9B80FD3C7BF7CA3FC5A8CF46 /* UserProfile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0742D3C8F8CEEF4A70FA15B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		5B977FDA4B9D16DFF23994BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = GoHomeNow/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yangxinsen.GoHomeNow;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6AA55C4463F764B1A23687E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = GoHomeNow/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.yangxinsen.GoHomeNow;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7FF48E1E79A6ED5F23B8BB89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5B971130539155DC254D424E /* Build configuration list for PBXProject "GoHomeNow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0742D3C8F8CEEF4A70FA15B4 /* Debug */,
+				7FF48E1E79A6ED5F23B8BB89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D0EC1694303FBC1DA3D3CC8F /* Build configuration list for PBXNativeTarget "GoHomeNow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B977FDA4B9D16DFF23994BF /* Debug */,
+				6AA55C4463F764B1A23687E2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EEF83CCB62AB9B71EEE17594 /* Project object */;
+}

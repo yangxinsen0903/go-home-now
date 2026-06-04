@@ -1,0 +1,19 @@
+name: GoHomeNow
+options:
+  bundleIdPrefix: com.yangxinsen
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "16"
+
+targets:
+  GoHomeNow:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: GoHomeNow
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yangxinsen.GoHomeNow
+        SWIFT_VERSION: "5.0"
+        INFOPLIST_FILE: GoHomeNow/Info.plist
