@@ -6,7 +6,8 @@
       "mcp__plugin_telegram_telegram__reply",
       "mcp__plugin_telegram_telegram__download_attachment",
       "Bash(ssh *)",
-      "Bash(gh repo *)"
+      "Bash(gh repo *)",
+      "Bash(CLAUDE_CODE_TMPDIR=/tmp ssh *)"
     ]
   }
 }
