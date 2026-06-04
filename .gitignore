@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+.venv/
+*.db
+
+# Xcode
+ios/build/
+ios/*.xcworkspace/xcuserdata/
+ios/DerivedData/
+ios/*.ipa
+ios/*.dSYM.zip
+ios/*.dSYM
+ios/Pods/
+
+# macOS
+.DS_Store
