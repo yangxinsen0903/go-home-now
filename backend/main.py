@@ -1,13 +1,27 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 from database import engine
 from models import Dog, UserProfile
-import models  # register all models with Base
+import models
 from database import Base
 from routes import dogs, matches
+from routes.admin import router as admin_router
 from data.seed import seed
 
 Base.metadata.create_all(bind=engine)
+
+# Migrate: add external_id column if it doesn't exist yet (SQLite-safe)
+with engine.connect() as conn:
+    try:
+        conn.execute(text("ALTER TABLE dogs ADD COLUMN external_id TEXT"))
+        conn.commit()
+    except Exception:
+        pass  # Column already present
+
 seed()
 
 app = FastAPI(title="GoHomeNow API", version="0.1.0")
@@ -21,6 +35,7 @@ app.add_middleware(
 
 app.include_router(dogs.router)
 app.include_router(matches.router)
+app.include_router(admin_router)
 
 
 @app.get("/")

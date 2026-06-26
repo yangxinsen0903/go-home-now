@@ -6,6 +6,7 @@ class Dog(Base):
     __tablename__ = "dogs"
 
     id = Column(Integer, primary_key=True, index=True)
+    external_id = Column(String, nullable=True, unique=True, index=True)  # e.g. "rg_12345"
     name = Column(String, nullable=False)
     age = Column(Integer)  # years
     breed = Column(String)
