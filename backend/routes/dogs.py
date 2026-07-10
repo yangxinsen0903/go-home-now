@@ -25,6 +25,7 @@ class DogOut(BaseModel):
     risk_flags: list
     behavior_notes: str
     image_url: Optional[str]
+    photos: list
 
     model_config = {"from_attributes": True}
 

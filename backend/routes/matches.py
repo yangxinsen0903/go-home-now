@@ -66,6 +66,7 @@ class MatchOut(BaseModel):
     risk_flags: list
     behavior_notes: str
     image_url: Optional[str]
+    photos: list
     fit_score: int
 
     model_config = {"from_attributes": True}

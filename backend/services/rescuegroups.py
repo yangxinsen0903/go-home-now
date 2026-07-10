@@ -130,9 +130,13 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
     shelter = org_names.get(org_id, "Local Rescue")
 
     pics = record.get("animalPictures") or []
-    image_url = None
-    if isinstance(pics, list) and pics:
-        image_url = pics[0].get("urlSecureFullsize") or pics[0].get("urlSecureThumbnail")
+    photo_urls = []
+    if isinstance(pics, list):
+        for p in pics[:6]:
+            url = p.get("urlSecureFullsize") or p.get("urlSecureThumbnail")
+            if url:
+                photo_urls.append(url)
+    image_url = photo_urls[0] if photo_urls else None
 
     raw_desc = record.get("animalDescription") or ""
     description = _strip_html(raw_desc)[:800] or f"{breed} available for adoption."
@@ -158,6 +162,7 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
         "risk_flags": risk_flags,
         "behavior_notes": description,
         "image_url": image_url,
+        "photos": photo_urls,
     }
 
 

@@ -7,27 +7,8 @@ struct DogDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
 
-                // Hero image
-                if let urlStr = dog.imageUrl, let url = URL(string: urlStr) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable().scaledToFill()
-                        case .failure:
-                            dogPlaceholder
-                        default:
-                            dogPlaceholder.overlay(ProgressView())
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 280)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                } else {
-                    dogPlaceholder
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 280)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                }
+                // Photo carousel
+                PhotoCarousel(photos: dog.photos, fallbackUrl: dog.imageUrl)
 
                 // Header
                 HStack {
@@ -99,6 +80,74 @@ struct DogDetailView: View {
     }
 
     private var dogPlaceholder: some View {
+        ZStack {
+            Color(.systemGray5)
+            Image(systemName: "pawprint.fill")
+                .font(.system(size: 60))
+                .foregroundStyle(Color(.systemGray3))
+        }
+    }
+}
+
+struct PhotoCarousel: View {
+    let photos: [String]
+    let fallbackUrl: String?
+
+    private var urls: [URL] {
+        let all = photos.isEmpty ? [fallbackUrl].compactMap { $0 } : photos
+        return all.prefix(6).compactMap { URL(string: $0) }
+    }
+
+    @State private var currentIndex = 0
+
+    var body: some View {
+        ZStack(alignment: .bottom) {
+            if urls.isEmpty {
+                placeholder
+            } else if urls.count == 1 {
+                photoView(url: urls[0])
+            } else {
+                TabView(selection: $currentIndex) {
+                    ForEach(Array(urls.enumerated()), id: \.offset) { index, url in
+                        photoView(url: url).tag(index)
+                    }
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 300)
+
+                // Dot indicators
+                HStack(spacing: 6) {
+                    ForEach(0..<urls.count, id: \.self) { i in
+                        Circle()
+                            .fill(i == currentIndex ? Color.white : Color.white.opacity(0.45))
+                            .frame(width: i == currentIndex ? 8 : 6, height: i == currentIndex ? 8 : 6)
+                    }
+                }
+                .padding(.bottom, 10)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 300)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func photoView(url: URL) -> some View {
+        AsyncImage(url: url) { phase in
+            switch phase {
+            case .success(let image):
+                image.resizable().scaledToFill()
+            case .failure:
+                placeholder
+            default:
+                placeholder.overlay(ProgressView())
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 300)
+        .clipped()
+    }
+
+    private var placeholder: some View {
         ZStack {
             Color(.systemGray5)
             Image(systemName: "pawprint.fill")

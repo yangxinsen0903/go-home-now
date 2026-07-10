@@ -22,3 +22,4 @@ class Dog(Base):
     risk_flags = Column(JSON, default=list)
     behavior_notes = Column(String)
     image_url = Column(String, nullable=True)
+    photos = Column(JSON, default=list)  # up to 6 photo URLs
