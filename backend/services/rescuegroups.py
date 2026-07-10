@@ -166,36 +166,46 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
     }
 
 
-def fetch_dogs(state: str, city: str, limit: int = 50) -> list[dict]:
-    """Fetch available dogs in a US state and return mapped dog dicts."""
-    payload = {
-        "apikey": API_KEY,
-        "objectType": "animals",
-        "objectAction": "publicSearch",
-        "search": {
-            "resultStart": "0",
-            "resultLimit": str(limit),
-            "resultSort": "animalID",
-            "resultOrder": "asc",
-            "calcFoundRows": "No",
-            "filters": [
-                {"fieldName": "animalStatus", "operation": "equals", "criteria": "Available"},
-                {"fieldName": "animalSpecies", "operation": "equals", "criteria": "Dog"},
-                {"fieldName": "animalLocationState", "operation": "equals", "criteria": state},
-            ],
-            "fields": _ANIMAL_FIELDS,
-        },
-    }
-    data = _post(payload)
-    records = data.get("data") or {}
-    if isinstance(records, list):
-        return []
+def fetch_all_dogs(state: str, city: str, page_size: int = 100) -> list[dict]:
+    """Fetch ALL currently-available dogs in a US state, paginating as needed."""
+    all_records: dict = {}
+    start = 0
 
-    org_ids = {str(v.get("animalOrgID")) for v in records.values() if v.get("animalOrgID")}
+    while True:
+        payload = {
+            "apikey": API_KEY,
+            "objectType": "animals",
+            "objectAction": "publicSearch",
+            "search": {
+                "resultStart": str(start),
+                "resultLimit": str(page_size),
+                "resultSort": "animalID",
+                "resultOrder": "asc",
+                "calcFoundRows": "Yes",
+                "filters": [
+                    {"fieldName": "animalStatus", "operation": "equals", "criteria": "Available"},
+                    {"fieldName": "animalSpecies", "operation": "equals", "criteria": "Dog"},
+                    {"fieldName": "animalLocationState", "operation": "equals", "criteria": state},
+                ],
+                "fields": _ANIMAL_FIELDS,
+            },
+        }
+        data = _post(payload)
+        records = data.get("data") or {}
+        if isinstance(records, list) or not records:
+            break
+        all_records.update(records)
+
+        total = int(data.get("foundRows") or 0)
+        start += page_size
+        if start >= total:
+            break
+
+    org_ids = {str(v.get("animalOrgID")) for v in all_records.values() if v.get("animalOrgID")}
     org_names = _fetch_org_names(org_ids)
 
     results = []
-    for record in records.values():
+    for record in all_records.values():
         mapped = _map_animal(record, org_names, city)
         if mapped:
             results.append(mapped)

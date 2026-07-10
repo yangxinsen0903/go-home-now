@@ -1,6 +1,6 @@
 from database import SessionLocal
 from models.dog import Dog
-from services.rescuegroups import fetch_dogs
+from services.rescuegroups import fetch_all_dogs
 
 SEARCH_TARGETS = [
     {"state": "DC", "city": "dc"},
@@ -8,22 +8,34 @@ SEARCH_TARGETS = [
 ]
 
 
-def sync_from_rescuegroups(limit_per_city: int = 50) -> dict:
-    """Pull dogs from RescueGroups and upsert into the local DB. Returns a summary."""
+def sync_from_rescuegroups() -> dict:
+    """
+    Full reconciliation sync:
+    - Fetch all currently-available dogs from RescueGroups for each city
+    - Upsert (add new, update existing)
+    - Delete dogs no longer returned (adopted / delisted)
+    Returns a summary dict.
+    """
     db = SessionLocal()
-    added = updated = 0
+    added = updated = deleted = 0
     errors = []
 
     try:
         for target in SEARCH_TARGETS:
+            city = target["city"]
             try:
-                dogs = fetch_dogs(target["state"], target["city"], limit=limit_per_city)
+                live_dogs = fetch_all_dogs(target["state"], city)
             except Exception as e:
-                errors.append(f"{target['city']}: {e}")
+                errors.append(f"{city}: {e}")
                 continue
 
-            for dog_data in dogs:
+            live_ids = {d["external_id"] for d in live_dogs if d.get("external_id")}
+
+            # Upsert
+            for dog_data in live_dogs:
                 external_id = dog_data.get("external_id")
+                if not external_id:
+                    continue
                 existing = db.query(Dog).filter(Dog.external_id == external_id).first()
                 if existing:
                     for k, v in dog_data.items():
@@ -33,6 +45,19 @@ def sync_from_rescuegroups(limit_per_city: int = 50) -> dict:
                     db.add(Dog(**dog_data))
                     added += 1
 
+            # Delete dogs from this city no longer available on RescueGroups
+            # (only touch RescueGroups-sourced dogs, i.e. external_id starts with "rg_")
+            stale = (
+                db.query(Dog)
+                .filter(Dog.city == city)
+                .filter(Dog.external_id.like("rg_%"))
+                .filter(Dog.external_id.notin_(live_ids))
+                .all()
+            )
+            for dog in stale:
+                db.delete(dog)
+                deleted += 1
+
         db.commit()
     except Exception as e:
         db.rollback()
@@ -40,4 +65,4 @@ def sync_from_rescuegroups(limit_per_city: int = 50) -> dict:
     finally:
         db.close()
 
-    return {"added": added, "updated": updated, "errors": errors}
+    return {"added": added, "updated": updated, "deleted": deleted, "errors": errors}
