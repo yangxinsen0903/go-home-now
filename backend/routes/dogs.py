@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from models.dog import Dog
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional
 
 router = APIRouter(prefix="/api/dogs", tags=["dogs"])
@@ -25,7 +25,12 @@ class DogOut(BaseModel):
     risk_flags: list
     behavior_notes: str
     image_url: Optional[str]
-    photos: list
+    photos: list = []
+
+    @field_validator("photos", "risk_flags", mode="before")
+    @classmethod
+    def coerce_none_to_list(cls, v):
+        return v or []
 
     model_config = {"from_attributes": True}
 

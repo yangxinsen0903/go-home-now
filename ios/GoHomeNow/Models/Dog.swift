@@ -16,7 +16,7 @@ struct Dog: Codable, Identifiable {
     let riskFlags: [String]
     let behaviorNotes: String
     let imageUrl: String?
-    let photos: [String]
+    var photos: [String]
     var fitScore: Int?
 
     enum CodingKeys: String, CodingKey {
