@@ -42,10 +42,26 @@ struct DogCardView: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            ZStack {
-                Circle().fill(Color(.systemGray5)).frame(width: 56, height: 56)
-                Text(dog.name.prefix(1)).font(.title2).bold()
+            Group {
+                if let urlStr = dog.imageUrl, let url = URL(string: urlStr) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().scaledToFill()
+                        default:
+                            Circle().fill(Color(.systemGray5)).overlay(
+                                Text(dog.name.prefix(1)).font(.title2).bold()
+                            )
+                        }
+                    }
+                } else {
+                    Circle().fill(Color(.systemGray5)).overlay(
+                        Text(dog.name.prefix(1)).font(.title2).bold()
+                    )
+                }
             }
+            .frame(width: 56, height: 56)
+            .clipShape(Circle())
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     Text(dog.name).font(.headline)

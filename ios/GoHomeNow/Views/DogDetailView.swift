@@ -7,6 +7,28 @@ struct DogDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
 
+                // Hero image
+                if let urlStr = dog.imageUrl, let url = URL(string: urlStr) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().scaledToFill()
+                        case .failure:
+                            dogPlaceholder
+                        default:
+                            dogPlaceholder.overlay(ProgressView())
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 280)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                } else {
+                    dogPlaceholder
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 280)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                }
+
                 // Header
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
@@ -74,6 +96,15 @@ struct DogDetailView: View {
         }
         .navigationTitle(dog.name)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var dogPlaceholder: some View {
+        ZStack {
+            Color(.systemGray5)
+            Image(systemName: "pawprint.fill")
+                .font(.system(size: 60))
+                .foregroundStyle(Color(.systemGray3))
+        }
     }
 }
 
