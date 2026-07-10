@@ -2,6 +2,9 @@ import SwiftUI
 
 struct DogDetailView: View {
     let dog: Dog
+    @State private var showShelterSheet = false
+    @State private var showAdoptedConfirm = false
+    @State private var showCarePlan = false
 
     var body: some View {
         ScrollView {
@@ -54,29 +57,61 @@ struct DogDetailView: View {
                     }
                 }
 
-                // 90-day plan
-                SectionCard(title: "90-Day Care Plan") {
+                // 90-day plan preview (locked until adopted)
+                SectionCard(title: "90-Day Care Plan Preview") {
                     VStack(alignment: .leading, spacing: 10) {
                         CarePlanRow(day: "Day 0–7", text: "Home setup, supplies, vet visit (within \(dog.firstVetDays) days), decompression")
                         CarePlanRow(day: "Week 2–4", text: dog.trainingPlan)
                         CarePlanRow(day: "Day 30", text: "Progress check-in, training adjustment")
                         CarePlanRow(day: "Day 90", text: "Adoption success review, long-term care plan")
                     }
+                    .opacity(0.5)
+                    HStack {
+                        Image(systemName: "lock.fill").foregroundStyle(.secondary)
+                        Text("Complete your adoption to unlock your personal plan")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    .padding(.top, 4)
                 }
 
-                Button(action: {}) {
-                    Label("Build My 90-Day Plan", systemImage: "calendar.badge.plus")
+                // Primary CTA: contact shelter
+                Button(action: { showShelterSheet = true }) {
+                    Label("I Want to Adopt \(dog.name)", systemImage: "heart.fill")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.accentColor)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
+
+                // Secondary CTA: already adopted
+                Button(action: { showAdoptedConfirm = true }) {
+                    Text("I've Already Adopted \(dog.name) →")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+                .padding(.bottom, 8)
             }
             .padding()
         }
         .navigationTitle(dog.name)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showShelterSheet) {
+            ShelterContactSheet(dog: dog, onAdopted: {
+                showShelterSheet = false
+                showCarePlan = true
+            })
+        }
+        .alert("Congratulations! 🎉", isPresented: $showAdoptedConfirm) {
+            Button("Build My 90-Day Plan") { showCarePlan = true }
+            Button("Not Yet", role: .cancel) {}
+        } message: {
+            Text("Did you complete the adoption of \(dog.name)?")
+        }
+        .sheet(isPresented: $showCarePlan) {
+            CarePlanView(dog: dog)
+        }
     }
 
     private var dogPlaceholder: some View {
@@ -207,6 +242,122 @@ struct CarePlanRow: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(day).font(.caption).bold().foregroundStyle(Color.accentColor)
             Text(text).font(.subheadline)
+        }
+    }
+}
+
+struct ShelterContactSheet: View {
+    let dog: Dog
+    let onAdopted: () -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 24) {
+                VStack(spacing: 8) {
+                    Image(systemName: "house.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(Color.accentColor)
+                    Text("Contact the Shelter")
+                        .font(.title2).bold()
+                    Text(dog.shelter)
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.top, 8)
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Label("Search "\(dog.shelter)" online to find their phone number, address, and hours.", systemImage: "magnifyingglass")
+                        .font(.subheadline)
+                    Label("Ask to schedule a meet & greet with \(dog.name).", systemImage: "calendar")
+                        .font(.subheadline)
+                    Label("Complete the adoption application at the shelter.", systemImage: "doc.text.fill")
+                        .font(.subheadline)
+                }
+                .padding()
+                .background(Color(.systemGray6))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+
+                Spacer()
+
+                VStack(spacing: 12) {
+                    Text("Completed your adoption?")
+                        .font(.subheadline).foregroundStyle(.secondary)
+
+                    Button(action: onAdopted) {
+                        Label("I've Adopted \(dog.name)! 🎉", systemImage: "checkmark.seal.fill")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.green)
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
+
+                    Button("Not Yet — I'll Come Back Later") { dismiss() }
+                        .font(.subheadline).foregroundStyle(.secondary)
+                }
+            }
+            .padding()
+            .navigationTitle("Adopt \(dog.name)")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Close") { dismiss() }
+                }
+            }
+        }
+    }
+}
+
+struct CarePlanView: View {
+    let dog: Dog
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(spacing: 6) {
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 50))
+                            .foregroundStyle(.green)
+                        Text("Welcome home, \(dog.name)!")
+                            .font(.title2).bold()
+                        Text("Here's your personalized 90-day plan.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.top)
+
+                    SectionCard(title: "Your 90-Day Plan") {
+                        VStack(alignment: .leading, spacing: 14) {
+                            CarePlanRow(day: "Day 0–7", text: "Home setup, buy supplies, vet visit within \(dog.firstVetDays) days, decompression — let \(dog.name) settle in at their own pace.")
+                            CarePlanRow(day: "Week 2–4", text: dog.trainingPlan)
+                            CarePlanRow(day: "Day 30", text: "First progress check-in — adjust training and routine as needed.")
+                            CarePlanRow(day: "Day 60", text: "Mid-point review — health check, bonding assessment.")
+                            CarePlanRow(day: "Day 90", text: "Adoption success review — celebrate and plan long-term care.")
+                        }
+                    }
+
+                    SectionCard(title: "Estimated Monthly Cost") {
+                        HStack {
+                            Text("~$\(dog.monthlyCost)/month")
+                                .font(.title3).bold()
+                            Spacer()
+                            Text("food, vet, supplies")
+                                .font(.caption).foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("90-Day Plan")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") { dismiss() }
+                }
+            }
         }
     }
 }
