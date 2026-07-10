@@ -267,7 +267,7 @@ struct ShelterContactSheet: View {
                 .padding(.top, 8)
 
                 VStack(alignment: .leading, spacing: 12) {
-                    Label("Search "\(dog.shelter)" online to find their phone number, address, and hours.", systemImage: "magnifyingglass")
+                    Label("Search \"\(dog.shelter)\" online to find their phone number, address, and hours.", systemImage: "magnifyingglass")
                         .font(.subheadline)
                     Label("Ask to schedule a meet & greet with \(dog.name).", systemImage: "calendar")
                         .font(.subheadline)
