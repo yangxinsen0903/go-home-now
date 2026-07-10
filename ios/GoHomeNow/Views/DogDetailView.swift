@@ -37,17 +37,28 @@ struct DogDetailView: View {
                 // Basic info grid
                 InfoGrid(dog: dog)
 
-                // Quick facts (only shown if data exists)
-                let facts = quickFacts
-                if !facts.isEmpty {
-                    SectionCard(title: "Quick Facts") {
-                        VStack(alignment: .leading, spacing: 8) {
-                            ForEach(facts, id: \.0) { label, value in
-                                HStack(alignment: .top) {
-                                    Text(label).font(.subheadline).foregroundStyle(.secondary).frame(width: 100, alignment: .leading)
-                                    Text(value).font(.subheadline)
-                                }
-                            }
+                // Behavior section
+                SectionCard(title: "Behavior") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        FactRow(label: "House-trained", value: dog.houseTrained)
+                        if let g = dog.goodWith {
+                            FactRow(label: "Gets Along With", value: g)
+                        } else {
+                            FactRow(label: "Gets Along With", value: nil)
+                        }
+                    }
+                }
+
+                // Health section
+                SectionCard(title: "Health") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        FactRow(label: "Sex", value: dog.sex)
+                        FactRow(label: "Spayed/Neutered", value: dog.neutered)
+                        FactRow(label: "Vaccinated", value: dog.vaccinated)
+                        if let w = dog.weightLbs {
+                            FactRow(label: "Weight", value: "~\(w) lbs")
+                        } else {
+                            FactRow(label: "Weight", value: nil)
                         }
                     }
                 }
@@ -127,14 +138,6 @@ struct DogDetailView: View {
         .sheet(isPresented: $showCarePlan) {
             CarePlanView(dog: dog)
         }
-    }
-
-    private var quickFacts: [(String, String)] {
-        var facts: [(String, String)] = []
-        if let sex = dog.sex { facts.append(("Sex", sex)) }
-        if let w = dog.weightLbs { facts.append(("Weight", "~\(w) lbs")) }
-        if let g = dog.goodWith, !g.isEmpty { facts.append(("Gets Along With", g)) }
-        return facts
     }
 
     private var dogPlaceholder: some View {
@@ -255,6 +258,25 @@ struct SectionCard<Content: View>: View {
         .padding()
         .background(Color(.systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 14))
+    }
+}
+
+struct FactRow: View {
+    let label: String
+    let value: String?
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 8) {
+            if let v = value {
+                Image(systemName: v == "Yes" ? "checkmark.circle.fill" : v == "No" ? "xmark.circle.fill" : "questionmark.circle.fill")
+                    .foregroundStyle(v == "Yes" ? .green : v == "No" ? .red : .secondary)
+            } else {
+                Image(systemName: "questionmark.circle.fill").foregroundStyle(.secondary)
+            }
+            Text(label).font(.subheadline).foregroundStyle(.secondary).frame(width: 130, alignment: .leading)
+            Text(value ?? "Unknown").font(.subheadline)
+                .foregroundStyle(value == nil ? .secondary : .primary)
+        }
     }
 }
 

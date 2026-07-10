@@ -23,6 +23,9 @@ class Dog(Base):
     behavior_notes = Column(String)
     image_url = Column(String, nullable=True)
     photos = Column(JSON, default=list)  # up to 6 photo URLs
-    sex = Column(String, nullable=True)         # Male / Female
-    weight_lbs = Column(Integer, nullable=True) # extracted from description
-    good_with = Column(String, nullable=True)   # e.g. "dogs, kids"
+    sex = Column(String, nullable=True)           # Male / Female
+    weight_lbs = Column(Integer, nullable=True)  # extracted from description
+    good_with = Column(String, nullable=True)    # e.g. "dogs, kids"
+    neutered = Column(String, nullable=True)     # Yes / No / Unknown
+    vaccinated = Column(String, nullable=True)   # Yes / No / Unknown
+    house_trained = Column(String, nullable=True) # Yes / No / Unknown

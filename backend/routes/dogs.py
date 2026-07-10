@@ -29,6 +29,9 @@ class DogOut(BaseModel):
     sex: Optional[str] = None
     weight_lbs: Optional[int] = None
     good_with: Optional[str] = None
+    neutered: Optional[str] = None
+    vaccinated: Optional[str] = None
+    house_trained: Optional[str] = None
 
     @field_validator("photos", "risk_flags", mode="before")
     @classmethod

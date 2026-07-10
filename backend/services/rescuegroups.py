@@ -97,6 +97,30 @@ def _extract_good_with(text: str) -> Optional[str]:
     return None
 
 
+def _extract_yes_no(text: str, *positive_patterns: str) -> Optional[str]:
+    """Return 'Yes', 'No', or None by scanning text for keyword signals."""
+    t = text.lower()
+    for pat in positive_patterns:
+        not_pat = rf"not\s+{pat}|un{pat}"
+        if re.search(not_pat, t):
+            return "No"
+        if re.search(pat, t):
+            return "Yes"
+    return None
+
+
+def _extract_neutered(text: str) -> Optional[str]:
+    return _extract_yes_no(text, r"spay(?:ed)?", r"neuter(?:ed)?")
+
+
+def _extract_vaccinated(text: str) -> Optional[str]:
+    return _extract_yes_no(text, r"vaccin(?:ated|ations?)", r"up[\s\-]to[\s\-]date on (?:his|her|all)?\s*(?:shots|vaccines?|vaccinations?)")
+
+
+def _extract_house_trained(text: str) -> Optional[str]:
+    return _extract_yes_no(text, r"house[\s\-]train(?:ed)?", r"potty[\s\-]train(?:ed)?")
+
+
 def _estimate_size(breed: str) -> str:
     b = (breed or "").lower()
     if any(k in b for k in _SMALL_BREED_KEYWORDS):
@@ -192,6 +216,9 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
 
     weight_lbs = _extract_weight(raw_text)
     good_with = _extract_good_with(raw_text)
+    neutered = _extract_neutered(raw_text)
+    vaccinated = _extract_vaccinated(raw_text)
+    house_trained = _extract_house_trained(raw_text)
 
     sex_raw = (record.get("animalSex") or "").strip()
     sex = sex_raw if sex_raw in ("Male", "Female") else None
@@ -221,6 +248,9 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
         "sex": sex,
         "weight_lbs": weight_lbs,
         "good_with": good_with,
+        "neutered": neutered,
+        "vaccinated": vaccinated,
+        "house_trained": house_trained,
     }
 
 
