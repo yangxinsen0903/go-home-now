@@ -49,6 +49,54 @@ def _strip_html(html: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _extract_rg_description(html: str) -> str:
+    """Pull only the rgDescription div, stripping rgFoster (contact) and rgSummary (promo)."""
+    m = re.search(r'class=["\']rgDescription["\'][^>]*>(.*?)</div>', html or "", re.DOTALL | re.IGNORECASE)
+    if m:
+        return _strip_html(m.group(1))
+    return _strip_html(html)
+
+
+_JUNK_PREFIXES = re.compile(
+    r"^\s*(?:name\s*:|best guess for|sex\s*:|approximate weight|gets along with"
+    r"|currently living|foster|please contact|http|www\.)",
+    re.IGNORECASE,
+)
+
+def _clean_behavior_notes(raw_text: str) -> str:
+    """Remove structured-data preamble and marketing lines; keep narrative text."""
+    sentences = re.split(r"(?<=[.!?])\s+", raw_text)
+    kept = []
+    for s in sentences:
+        s = s.strip()
+        if not s:
+            continue
+        if _JUNK_PREFIXES.match(s):
+            continue
+        if re.search(r"@\w+\.\w+", s):  # email address
+            continue
+        if re.search(r"NEEDS? A FOREVER HOME", s, re.IGNORECASE):
+            continue
+        kept.append(s)
+    return " ".join(kept)[:600].strip()
+
+
+def _extract_weight(text: str) -> Optional[int]:
+    m = re.search(r"(?:approximate\s+)?weight[:\s]+(\d+)\s*lbs?", text, re.IGNORECASE)
+    return int(m.group(1)) if m else None
+
+
+def _extract_good_with(text: str) -> Optional[str]:
+    m = re.search(
+        r"gets?\s+along\s+with\s*[:\-]?\s*(.+?)(?:\.|We haven|We have not|$)",
+        text, re.IGNORECASE | re.DOTALL,
+    )
+    if m:
+        result = re.sub(r"\s+", " ", m.group(1)).strip().rstrip("!")
+        return result[:150] if result else None
+    return None
+
+
 def _estimate_size(breed: str) -> str:
     b = (breed or "").lower()
     if any(k in b for k in _SMALL_BREED_KEYWORDS):
@@ -138,8 +186,15 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
                 photo_urls.append(url)
     image_url = photo_urls[0] if photo_urls else None
 
-    raw_desc = record.get("animalDescription") or ""
-    description = _strip_html(raw_desc)[:800] or f"{breed} available for adoption."
+    raw_html = record.get("animalDescription") or ""
+    raw_text = _extract_rg_description(raw_html) or _strip_html(raw_html)
+    behavior_notes = _clean_behavior_notes(raw_text) or f"{breed} available for adoption."
+
+    weight_lbs = _extract_weight(raw_text)
+    good_with = _extract_good_with(raw_text)
+
+    sex_raw = (record.get("animalSex") or "").strip()
+    sex = sex_raw if sex_raw in ("Male", "Female") else None
 
     risk_flags = []
     if (record.get("animalSpecialneeds") or "").lower() in ("yes", "true", "1"):
@@ -160,9 +215,12 @@ def _map_animal(record: dict, org_names: dict, city: str) -> Optional[dict]:
         "first_vet_days": 7,
         "training_plan": _default_training_plan(energy, general_age),
         "risk_flags": risk_flags,
-        "behavior_notes": description,
+        "behavior_notes": behavior_notes,
         "image_url": image_url,
         "photos": photo_urls,
+        "sex": sex,
+        "weight_lbs": weight_lbs,
+        "good_with": good_with,
     }
 
 

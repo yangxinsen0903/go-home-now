@@ -34,10 +34,25 @@ struct DogDetailView: View {
                 .background(Color(.systemGray6))
                 .clipShape(RoundedRectangle(cornerRadius: 14))
 
-                // Care stats
+                // Basic info grid
                 InfoGrid(dog: dog)
 
-                // Behavior notes
+                // Quick facts (only shown if data exists)
+                let facts = quickFacts
+                if !facts.isEmpty {
+                    SectionCard(title: "Quick Facts") {
+                        VStack(alignment: .leading, spacing: 8) {
+                            ForEach(facts, id: \.0) { label, value in
+                                HStack(alignment: .top) {
+                                    Text(label).font(.subheadline).foregroundStyle(.secondary).frame(width: 100, alignment: .leading)
+                                    Text(value).font(.subheadline)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Behavior notes (cleaned)
                 if !dog.behaviorNotes.isEmpty {
                     SectionCard(title: "About \(dog.name)") {
                         Text(dog.behaviorNotes).font(.body)
@@ -112,6 +127,14 @@ struct DogDetailView: View {
         .sheet(isPresented: $showCarePlan) {
             CarePlanView(dog: dog)
         }
+    }
+
+    private var quickFacts: [(String, String)] {
+        var facts: [(String, String)] = []
+        if let sex = dog.sex { facts.append(("Sex", sex)) }
+        if let w = dog.weightLbs { facts.append(("Weight", "~\(w) lbs")) }
+        if let g = dog.goodWith, !g.isEmpty { facts.append(("Gets Along With", g)) }
+        return facts
     }
 
     private var dogPlaceholder: some View {
@@ -196,8 +219,8 @@ struct InfoGrid: View {
     let dog: Dog
     var body: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            InfoTile(icon: "dollarsign.circle", label: "Monthly", value: "$\(dog.monthlyCost)")
-            InfoTile(icon: "stethoscope", label: "First Vet", value: "Day \(dog.firstVetDays)")
+            InfoTile(icon: "calendar", label: "Age", value: dog.age == 0 ? "< 1 yr" : "\(dog.age) yr\(dog.age == 1 ? "" : "s")")
+            InfoTile(icon: "scalemass", label: "Size", value: dog.size.capitalized)
             InfoTile(icon: "figure.run", label: "Energy", value: dog.energyLevel.capitalized)
             InfoTile(icon: "building.2", label: "City", value: dog.city.uppercased())
         }

@@ -68,6 +68,9 @@ class MatchOut(BaseModel):
     behavior_notes: str
     image_url: Optional[str]
     photos: list = []
+    sex: Optional[str] = None
+    weight_lbs: Optional[int] = None
+    good_with: Optional[str] = None
     fit_score: int
 
     @field_validator("photos", "risk_flags", mode="before")

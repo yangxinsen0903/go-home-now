@@ -26,6 +26,9 @@ class DogOut(BaseModel):
     behavior_notes: str
     image_url: Optional[str]
     photos: list = []
+    sex: Optional[str] = None
+    weight_lbs: Optional[int] = None
+    good_with: Optional[str] = None
 
     @field_validator("photos", "risk_flags", mode="before")
     @classmethod

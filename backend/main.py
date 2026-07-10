@@ -16,7 +16,7 @@ Base.metadata.create_all(bind=engine)
 
 # Migrate: add external_id column if it doesn't exist yet (SQLite-safe)
 with engine.connect() as conn:
-    for col_def in ["external_id TEXT", "photos TEXT"]:
+    for col_def in ["external_id TEXT", "photos TEXT", "sex TEXT", "weight_lbs INTEGER", "good_with TEXT"]:
         try:
             conn.execute(text(f"ALTER TABLE dogs ADD COLUMN {col_def}"))
             conn.commit()

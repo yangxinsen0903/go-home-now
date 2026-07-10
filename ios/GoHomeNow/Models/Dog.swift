@@ -17,10 +17,13 @@ struct Dog: Codable, Identifiable {
     let behaviorNotes: String
     let imageUrl: String?
     var photos: [String]
+    let sex: String?
+    let weightLbs: Int?
+    let goodWith: String?
     var fitScore: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id, name, age, breed, size, temperament, shelter, city, photos
+        case id, name, age, breed, size, temperament, shelter, city, photos, sex
         case energyLevel = "energy_level"
         case monthlyCost = "monthly_cost"
         case firstVetDays = "first_vet_days"
@@ -28,6 +31,8 @@ struct Dog: Codable, Identifiable {
         case riskFlags = "risk_flags"
         case behaviorNotes = "behavior_notes"
         case imageUrl = "image_url"
+        case weightLbs = "weight_lbs"
+        case goodWith = "good_with"
         case fitScore = "fit_score"
     }
 
