@@ -17,3 +17,5 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.yangxinsen.GoHomeNow
         SWIFT_VERSION: "5.0"
         INFOPLIST_FILE: GoHomeNow/Info.plist
+        DEVELOPMENT_TEAM: Q24QG37Q66
+        CODE_SIGN_STYLE: Automatic

@@ -2,7 +2,7 @@ import Foundation
 
 class APIService {
     static let shared = APIService()
-    private let baseURL = "http://100.99.145.120:8020"
+    private let baseURL = "http://187.124.95.189:8020"
 
     func fetchMatches(request: MatchRequest) async throws -> [Dog] {
         let url = URL(string: "\(baseURL)/api/matches/")!

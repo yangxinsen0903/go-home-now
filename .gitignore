@@ -10,6 +10,8 @@ venv/
 # Xcode
 ios/build/
 ios/*.xcworkspace/xcuserdata/
+ios/**/*.xcworkspace/xcuserdata/
+ios/**/*.xcuserstate
 ios/DerivedData/
 ios/*.ipa
 ios/*.dSYM.zip

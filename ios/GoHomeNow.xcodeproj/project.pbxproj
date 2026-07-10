@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		011EA411BDA173640EB0E96C /* GoHomeNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoHomeNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		011EA411BDA173640EB0E96C /* GoHomeNow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoHomeNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoHomeNowApp.swift; sourceTree = "<group>"; };
 		0F370B0B15C3A047FF788A1B /* Dog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogDetailView.swift; sourceTree = "<group>"; };
@@ -123,6 +123,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					322ECE5BBC7C93E76EC0BEFF = {
+						DevelopmentTeam = Q24QG37Q66;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 5B971130539155DC254D424E /* Build configuration list for PBXProject "GoHomeNow" */;
 			developmentRegion = en;
@@ -230,6 +236,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q24QG37Q66;
 				INFOPLIST_FILE = GoHomeNow/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
@@ -249,6 +256,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q24QG37Q66;
 				INFOPLIST_FILE = GoHomeNow/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
