@@ -62,6 +62,7 @@ class MatchOut(BaseModel):
     shelter: str
     city: str
     monthly_cost: int
+    first_vet_days: int
     training_plan: str
     risk_flags: list
     behavior_notes: str
