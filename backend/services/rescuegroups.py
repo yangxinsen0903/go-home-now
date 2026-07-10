@@ -63,6 +63,16 @@ _JUNK_PREFIXES = re.compile(
     re.IGNORECASE,
 )
 
+# Catch structured "FIELD : VALUE" blocks that survive sentence splitting
+_JUNK_CONTAINS = re.compile(
+    r"estimated\s+age\s*:"
+    r"|(?:^|\s)weight\s*:\s*\d"
+    r"|best\s+guess\s+for\s+breed"
+    r"|currently\s+living\s+(?:in|with)"
+    r"|please\s+(?:contact|email|call)",
+    re.IGNORECASE,
+)
+
 def _clean_behavior_notes(raw_text: str) -> str:
     """Remove structured-data preamble and marketing lines; keep narrative text."""
     sentences = re.split(r"(?<=[.!?])\s+", raw_text)
@@ -73,7 +83,11 @@ def _clean_behavior_notes(raw_text: str) -> str:
             continue
         if _JUNK_PREFIXES.match(s):
             continue
+        if _JUNK_CONTAINS.search(s):
+            continue
         if re.search(r"@\w+\.\w+", s):  # email address
+            continue
+        if re.search(r"https?://|www\.", s, re.IGNORECASE):
             continue
         if re.search(r"NEEDS? A FOREVER HOME", s, re.IGNORECASE):
             continue

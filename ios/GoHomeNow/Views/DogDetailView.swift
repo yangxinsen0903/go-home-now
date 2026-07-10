@@ -10,16 +10,15 @@ struct DogDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
 
-                // Photo carousel
                 PhotoCarousel(photos: dog.photos, fallbackUrl: dog.imageUrl)
 
-                // Header
-                HStack {
+                // Header card
+                HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(dog.name).font(.largeTitle).bold()
-                        Text("\(dog.breed) • \(dog.age) yr\(dog.age == 1 ? "" : "s") • \(dog.size.capitalized)")
-                            .foregroundStyle(.secondary)
-                        Text(dog.shelter).font(.caption).foregroundStyle(.secondary)
+                        Text(dog.breed).foregroundStyle(.secondary)
+                        Text("\(dog.shelter) · \(dog.city.uppercased())")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
                     if let score = dog.fitScore {
@@ -34,36 +33,78 @@ struct DogDetailView: View {
                 .background(Color(.systemGray6))
                 .clipShape(RoundedRectangle(cornerRadius: 14))
 
-                // Basic info grid
-                InfoGrid(dog: dog)
-
-                // Behavior section
-                SectionCard(title: "Behavior") {
-                    VStack(alignment: .leading, spacing: 8) {
-                        FactRow(label: "House-trained", value: dog.houseTrained)
-                        if let g = dog.goodWith {
-                            FactRow(label: "Gets Along With", value: g)
-                        } else {
-                            FactRow(label: "Gets Along With", value: nil)
-                        }
+                // Physical traits
+                VStack(alignment: .leading, spacing: 10) {
+                    SectionLabel(title: "Physical")
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                        InfoTile(
+                            icon: "clock.fill",
+                            label: "Age",
+                            value: dog.age == 0 ? "< 1 yr" : "\(dog.age) yr\(dog.age == 1 ? "" : "s")"
+                        )
+                        InfoTile(
+                            icon: "person.fill",
+                            label: "Sex",
+                            value: dog.sex?.capitalized ?? "Unknown",
+                            iconColor: dog.sex != nil ? Color.accentColor : .secondary,
+                            valueColor: dog.sex != nil ? .primary : .secondary
+                        )
+                        InfoTile(
+                            icon: "scalemass",
+                            label: "Size",
+                            value: dog.weightLbs.map { "\(dog.size.capitalized) · ~\($0) lbs" } ?? dog.size.capitalized
+                        )
+                        InfoTile(
+                            icon: "bolt.fill",
+                            label: "Energy",
+                            value: dog.energyLevel.capitalized
+                        )
                     }
                 }
 
-                // Health section
-                SectionCard(title: "Health") {
-                    VStack(alignment: .leading, spacing: 8) {
-                        FactRow(label: "Sex", value: dog.sex)
-                        FactRow(label: "Spayed/Neutered", value: dog.neutered)
-                        FactRow(label: "Vaccinated", value: dog.vaccinated)
-                        if let w = dog.weightLbs {
-                            FactRow(label: "Weight", value: "~\(w) lbs")
-                        } else {
-                            FactRow(label: "Weight", value: nil)
-                        }
+                // Compatibility
+                VStack(alignment: .leading, spacing: 10) {
+                    SectionLabel(title: "Compatibility")
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                        InfoTile(
+                            icon: "pawprint.fill",
+                            label: "Gets Along With",
+                            value: dog.goodWith ?? "Unknown",
+                            iconColor: dog.goodWith != nil ? Color.accentColor : .secondary,
+                            valueColor: dog.goodWith != nil ? .primary : .secondary
+                        )
+                        InfoTile(
+                            icon: "house.fill",
+                            label: "House-trained",
+                            value: dog.houseTrained ?? "Unknown",
+                            iconColor: yesNoColor(dog.houseTrained),
+                            valueColor: yesNoColor(dog.houseTrained)
+                        )
                     }
                 }
 
-                // Behavior notes (cleaned)
+                // Health
+                VStack(alignment: .leading, spacing: 10) {
+                    SectionLabel(title: "Health")
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                        InfoTile(
+                            icon: "staroflife.fill",
+                            label: "Spayed / Neutered",
+                            value: dog.neutered ?? "Unknown",
+                            iconColor: yesNoColor(dog.neutered),
+                            valueColor: yesNoColor(dog.neutered)
+                        )
+                        InfoTile(
+                            icon: "syringe.fill",
+                            label: "Vaccinated",
+                            value: dog.vaccinated ?? "Unknown",
+                            iconColor: yesNoColor(dog.vaccinated),
+                            valueColor: yesNoColor(dog.vaccinated)
+                        )
+                    }
+                }
+
+                // About
                 if !dog.behaviorNotes.isEmpty {
                     SectionCard(title: "About \(dog.name)") {
                         Text(dog.behaviorNotes).font(.body)
@@ -86,7 +127,7 @@ struct DogDetailView: View {
                 // 90-day plan preview (locked until adopted)
                 SectionCard(title: "90-Day Care Plan Preview") {
                     VStack(alignment: .leading, spacing: 10) {
-                        CarePlanRow(day: "Day 0–7", text: "Home setup, supplies, vet visit (within \(dog.firstVetDays) days), decompression")
+                        CarePlanRow(day: "Day 0–7", text: "Home setup, supplies, vet visit within \(dog.firstVetDays) days, decompression")
                         CarePlanRow(day: "Week 2–4", text: dog.trainingPlan)
                         CarePlanRow(day: "Day 30", text: "Progress check-in, training adjustment")
                         CarePlanRow(day: "Day 90", text: "Adoption success review, long-term care plan")
@@ -100,7 +141,7 @@ struct DogDetailView: View {
                     .padding(.top, 4)
                 }
 
-                // Primary CTA: contact shelter
+                // Primary CTA
                 Button(action: { showShelterSheet = true }) {
                     Label("I Want to Adopt \(dog.name)", systemImage: "heart.fill")
                         .frame(maxWidth: .infinity)
@@ -110,9 +151,9 @@ struct DogDetailView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
 
-                // Secondary CTA: already adopted
+                // Secondary CTA
                 Button(action: { showAdoptedConfirm = true }) {
-                    Text("I've Already Adopted \(dog.name) →")
+                    Text("I've Already Adopted \(dog.name) \u{2192}")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
@@ -129,7 +170,7 @@ struct DogDetailView: View {
                 showCarePlan = true
             })
         }
-        .alert("Congratulations! 🎉", isPresented: $showAdoptedConfirm) {
+        .alert("Congratulations! \u{1F389}", isPresented: $showAdoptedConfirm) {
             Button("Build My 90-Day Plan") { showCarePlan = true }
             Button("Not Yet", role: .cancel) {}
         } message: {
@@ -140,15 +181,16 @@ struct DogDetailView: View {
         }
     }
 
-    private var dogPlaceholder: some View {
-        ZStack {
-            Color(.systemGray5)
-            Image(systemName: "pawprint.fill")
-                .font(.system(size: 60))
-                .foregroundStyle(Color(.systemGray3))
+    private func yesNoColor(_ val: String?) -> Color {
+        switch val {
+        case "Yes": return .green
+        case "No": return .red
+        default: return .secondary
         }
     }
 }
+
+// MARK: - Photo Carousel
 
 struct PhotoCarousel: View {
     let photos: [String]
@@ -176,7 +218,6 @@ struct PhotoCarousel: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: 300)
 
-                // Dot indicators
                 HStack(spacing: 6) {
                     ForEach(0..<urls.count, id: \.self) { i in
                         Circle()
@@ -218,15 +259,16 @@ struct PhotoCarousel: View {
     }
 }
 
-struct InfoGrid: View {
-    let dog: Dog
+// MARK: - Reusable Tiles & Cards
+
+struct SectionLabel: View {
+    let title: String
     var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            InfoTile(icon: "calendar", label: "Age", value: dog.age == 0 ? "< 1 yr" : "\(dog.age) yr\(dog.age == 1 ? "" : "s")")
-            InfoTile(icon: "scalemass", label: "Size", value: dog.size.capitalized)
-            InfoTile(icon: "figure.run", label: "Energy", value: dog.energyLevel.capitalized)
-            InfoTile(icon: "building.2", label: "City", value: dog.city.uppercased())
-        }
+        Text(title.uppercased())
+            .font(.caption)
+            .fontWeight(.semibold)
+            .foregroundStyle(.secondary)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -234,14 +276,27 @@ struct InfoTile: View {
     let icon: String
     let label: String
     let value: String
+    var iconColor: Color = .accentColor
+    var valueColor: Color = .primary
+
     var body: some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon).font(.title2).foregroundStyle(Color.accentColor)
-            Text(value).font(.headline)
-            Text(label).font(.caption).foregroundStyle(.secondary)
+        VStack(spacing: 6) {
+            Image(systemName: icon)
+                .font(.title2)
+                .foregroundStyle(iconColor)
+            Text(value)
+                .font(.headline)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .foregroundStyle(valueColor)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
         }
-        .frame(maxWidth: .infinity)
-        .padding()
+        .frame(maxWidth: .infinity, minHeight: 90)
+        .padding(12)
         .background(Color(.systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
@@ -261,25 +316,6 @@ struct SectionCard<Content: View>: View {
     }
 }
 
-struct FactRow: View {
-    let label: String
-    let value: String?
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            if let v = value {
-                Image(systemName: v == "Yes" ? "checkmark.circle.fill" : v == "No" ? "xmark.circle.fill" : "questionmark.circle.fill")
-                    .foregroundStyle(v == "Yes" ? .green : v == "No" ? .red : .secondary)
-            } else {
-                Image(systemName: "questionmark.circle.fill").foregroundStyle(.secondary)
-            }
-            Text(label).font(.subheadline).foregroundStyle(.secondary).frame(width: 130, alignment: .leading)
-            Text(value ?? "Unknown").font(.subheadline)
-                .foregroundStyle(value == nil ? .secondary : .primary)
-        }
-    }
-}
-
 struct CarePlanRow: View {
     let day: String
     let text: String
@@ -290,6 +326,8 @@ struct CarePlanRow: View {
         }
     }
 }
+
+// MARK: - Shelter Contact Sheet
 
 struct ShelterContactSheet: View {
     let dog: Dog
@@ -330,7 +368,7 @@ struct ShelterContactSheet: View {
                         .font(.subheadline).foregroundStyle(.secondary)
 
                     Button(action: onAdopted) {
-                        Label("I've Adopted \(dog.name)! 🎉", systemImage: "checkmark.seal.fill")
+                        Label("I've Adopted \(dog.name)! \u{1F389}", systemImage: "checkmark.seal.fill")
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(Color.green)
@@ -338,7 +376,7 @@ struct ShelterContactSheet: View {
                             .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
 
-                    Button("Not Yet — I'll Come Back Later") { dismiss() }
+                    Button("Not Yet \u{2014} I'll Come Back Later") { dismiss() }
                         .font(.subheadline).foregroundStyle(.secondary)
                 }
             }
@@ -353,6 +391,8 @@ struct ShelterContactSheet: View {
         }
     }
 }
+
+// MARK: - Care Plan View
 
 struct CarePlanView: View {
     let dog: Dog
