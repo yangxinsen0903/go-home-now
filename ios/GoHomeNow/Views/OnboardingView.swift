@@ -3,15 +3,16 @@ import SwiftUI
 private struct SizeOption {
     let id: String
     let label: String
-    let emoji: String
-    let emojiSize: CGFloat
+    // Stretch dog.fill to different aspect ratios: wide+short = dachshund, square = medium, tall = large breed
+    let iconWidth: CGFloat
+    let iconHeight: CGFloat
     let tileHeight: CGFloat
 }
 
 private let sizeOptions: [SizeOption] = [
-    SizeOption(id: "small",  label: "Small",  emoji: "\u{1F429}", emojiSize: 28, tileHeight: 84),
-    SizeOption(id: "medium", label: "Medium", emoji: "\u{1F415}", emojiSize: 40, tileHeight: 104),
-    SizeOption(id: "large",  label: "Large",  emoji: "\u{1F9AE}", emojiSize: 56, tileHeight: 128),
+    SizeOption(id: "small",  label: "Small",  iconWidth: 54, iconHeight: 22, tileHeight: 84),
+    SizeOption(id: "medium", label: "Medium", iconWidth: 38, iconHeight: 36, tileHeight: 104),
+    SizeOption(id: "large",  label: "Large",  iconWidth: 28, iconHeight: 52, tileHeight: 128),
 ]
 
 struct OnboardingView: View {
@@ -63,38 +64,28 @@ struct OnboardingView: View {
                         Text("Select all sizes you're open to — leave blank for any")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        // Bottom-aligned tiles of increasing height, each with a distinct dog emoji
+                        // Bottom-aligned stepped tiles; dog.fill stretched to different aspect ratios
+                        // wide+short = dachshund, square = medium, tall = large breed
                         HStack(alignment: .bottom, spacing: 10) {
                             ForEach(sizeOptions, id: \.id) { opt in
                                 let selected = vm.profile.preferredSizes.contains(opt.id)
                                 Button(action: { vm.profile.toggleSize(opt.id) }) {
-                                    ZStack(alignment: .topTrailing) {
-                                        VStack(spacing: 0) {
-                                            Spacer(minLength: 0)
-                                            Text(opt.emoji)
-                                                .font(.system(size: opt.emojiSize))
-                                            Text(opt.label)
-                                                .font(.caption).fontWeight(.semibold)
-                                                .foregroundStyle(Color.primary)
-                                                .padding(.top, 6)
-                                                .padding(.bottom, 10)
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: opt.tileHeight)
-                                        .background(selected ? Color.accentColor.opacity(0.12) : Color(.systemGray5))
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .stroke(selected ? Color.accentColor : Color.clear, lineWidth: 2.5)
-                                        )
-                                        if selected {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .font(.system(size: 18))
-                                                .foregroundStyle(Color.accentColor)
-                                                .background(Color(.systemBackground).clipShape(Circle()))
-                                                .padding(6)
-                                        }
+                                    VStack(spacing: 0) {
+                                        Spacer(minLength: 0)
+                                        Image(systemName: "dog.fill")
+                                            .resizable()
+                                            .frame(width: opt.iconWidth, height: opt.iconHeight)
+                                            .foregroundStyle(selected ? Color.white : Color.accentColor)
+                                        Text(opt.label)
+                                            .font(.caption).fontWeight(.semibold)
+                                            .foregroundStyle(selected ? Color.white : Color.primary)
+                                            .padding(.top, 8)
+                                            .padding(.bottom, 12)
                                     }
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: opt.tileHeight)
+                                    .background(selected ? Color.accentColor : Color(.systemGray5))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
                                 .buttonStyle(.plain)
                             }
