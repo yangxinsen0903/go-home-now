@@ -63,7 +63,7 @@ struct OnboardingView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         // Bottom-aligned tiles of increasing height → visually distinct sizes
-                        HStack(spacing: 10, alignment: .bottom) {
+                        HStack(alignment: .bottom, spacing: 10) {
                             ForEach(sizeOptions, id: \.id) { opt in
                                 let selected = vm.profile.preferredSizes.contains(opt.id)
                                 Button(action: { vm.profile.toggleSize(opt.id) }) {
