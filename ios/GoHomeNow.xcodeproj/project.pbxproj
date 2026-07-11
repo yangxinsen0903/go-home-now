@@ -14,6 +14,7 @@
 		6DDBC4EBDBBCC282E8320720 /* DogDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */; };
 		9B80FD3C7BF7CA3FC5A8CF46 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */; };
 		9DE6EF8968ECE0BA406270E3 /* GoHomeNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */; };
+		9E950E1448DDFC70D859824F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1903DBCB7C929277C0A39DA /* Assets.xcassets */; };
 		CD03868131EA8D8110714C23 /* DogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE48D9214B6F3EA7801813B /* DogListView.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogDetailView.swift; sourceTree = "<group>"; };
 		74E9D56C5F3FF7B52DDD5C9F /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		A1903DBCB7C929277C0A39DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D564DF70D50F2BFF3EA3AFA6 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		EAE48D9214B6F3EA7801813B /* DogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogListView.swift; sourceTree = "<group>"; };
 		ED2FDDE8878E1FD852C089C0 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		416645098E2BF1E4637D6982 /* GoHomeNow */ = {
 			isa = PBXGroup;
 			children = (
+				A1903DBCB7C929277C0A39DA /* Assets.xcassets */,
 				0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */,
 				F44885BC992F7AF692DE45D7 /* Info.plist */,
 				C1F075BBFD59DB4701D1593B /* Models */,
@@ -103,6 +106,7 @@
 			buildConfigurationList = D0EC1694303FBC1DA3D3CC8F /* Build configuration list for PBXNativeTarget "GoHomeNow" */;
 			buildPhases = (
 				3BF352CC5FC2939592AD91EB /* Sources */,
+				01794801891B5D5BC6CAACF3 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -148,6 +152,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		01794801891B5D5BC6CAACF3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E950E1448DDFC70D859824F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3BF352CC5FC2939592AD91EB /* Sources */ = {
