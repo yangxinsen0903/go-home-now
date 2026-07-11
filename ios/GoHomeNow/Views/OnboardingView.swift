@@ -1,5 +1,13 @@
 import SwiftUI
 
+private let sizeOptions: [(id: String, label: String, hint: String)] = [
+    ("toy",    "Toy",     "e.g. Chihuahua"),
+    ("small",  "Small",   "e.g. Beagle"),
+    ("medium", "Medium",  "e.g. Border Collie"),
+    ("large",  "Large",   "e.g. Labrador"),
+    ("xlarge", "X-Large", "e.g. Great Dane"),
+]
+
 struct OnboardingView: View {
     @EnvironmentObject var vm: AppViewModel
 
@@ -14,16 +22,16 @@ struct OnboardingView: View {
                     .pickerStyle(.segmented)
                 }
 
-                Section("Schedule") {
+                Section("Activity Level") {
                     Picker("Schedule", selection: $vm.profile.activityLevel) {
-                        Text("Low activity").tag("low")
+                        Text("Low").tag("low")
                         Text("Moderate").tag("moderate")
-                        Text("High activity").tag("high")
+                        Text("High").tag("high")
                     }
                     .pickerStyle(.segmented)
                 }
 
-                Section("Monthly dog budget: $\(vm.profile.monthlyBudget)") {
+                Section("Monthly Dog Budget: $\(vm.profile.monthlyBudget)") {
                     Slider(
                         value: Binding(
                             get: { Double(vm.profile.monthlyBudget) },
@@ -33,11 +41,63 @@ struct OnboardingView: View {
                     )
                 }
 
-                Section("Experience") {
+                Section("Owner Experience") {
                     Picker("Experience", selection: $vm.profile.experience) {
-                        Text("First-time owner").tag("first-time")
-                        Text("Some experience").tag("some")
+                        Text("First-time").tag("first-time")
+                        Text("Some").tag("some")
                         Text("Experienced").tag("experienced")
+                    }
+                    .pickerStyle(.segmented)
+                }
+
+                Section {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Dog Size")
+                            .font(.headline)
+                        Text("Select all sizes you're open to — leave blank for any size")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        LazyVGrid(
+                            columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())],
+                            spacing: 8
+                        ) {
+                            ForEach(sizeOptions, id: \.id) { opt in
+                                Button(action: { vm.profile.toggleSize(opt.id) }) {
+                                    VStack(spacing: 2) {
+                                        Text(opt.label)
+                                            .font(.subheadline).fontWeight(.semibold)
+                                        Text(opt.hint)
+                                            .font(.caption2)
+                                            .foregroundStyle(
+                                                vm.profile.preferredSizes.contains(opt.id) ? Color.white.opacity(0.8) : Color.secondary
+                                            )
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 10)
+                                    .background(
+                                        vm.profile.preferredSizes.contains(opt.id)
+                                        ? Color.accentColor
+                                        : Color(.systemGray5)
+                                    )
+                                    .foregroundStyle(
+                                        vm.profile.preferredSizes.contains(opt.id)
+                                        ? Color.white
+                                        : Color.primary
+                                    )
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+                    .padding(.vertical, 4)
+                }
+
+                Section("Age Preference") {
+                    Picker("Age", selection: $vm.profile.preferredAge) {
+                        Text("Any").tag("any")
+                        Text("Puppy (< 1 yr)").tag("puppy")
+                        Text("Adult (1+ yr)").tag("adult")
                     }
                     .pickerStyle(.segmented)
                 }

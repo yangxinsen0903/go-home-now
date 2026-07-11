@@ -9,17 +9,28 @@ HTTP_API_URL = "https://api.rescuegroups.org/http/v2.json"
 # animalGeneralAge → approximate age in years
 _AGE_MAP = {"Baby": 0, "Young": 1, "Adult": 4, "Senior": 9}
 
+# Official size tiers: toy < 10 lb, small 10-25 lb, medium 25-60 lb, large 60-100 lb, xlarge 100+ lb
+_TOY_BREED_KEYWORDS = {
+    "chihuahua", "pomeranian", "maltese", "toy poodle", "papillon",
+    "affenpinscher", "italian greyhound", "russian toy", "japanese chin",
+}
 _SMALL_BREED_KEYWORDS = {
-    "chihuahua", "pomeranian", "maltese", "yorkshire", "dachshund",
-    "bichon", "shih tzu", "miniature", "toy poodle", "papillon", "pug",
-    "boston terrier", "jack russell", "fox terrier",
+    "yorkshire", "dachshund", "bichon", "shih tzu", "pug",
+    "boston terrier", "jack russell", "fox terrier", "miniature schnauzer",
+    "cocker spaniel", "cavalier", "basenji", "scottish terrier",
+    "west highland", "cairn terrier", "beagle", "french bulldog",
 }
 _LARGE_BREED_KEYWORDS = {
     "labrador", "golden retriever", "german shepherd", "husky", "malinois",
-    "rottweiler", "mastiff", "great dane", "saint bernard", "newfoundland",
-    "weimaraner", "vizsla", "collie", "cattle dog", "heeler", "boxer",
-    "doberman", "cane corso", "great pyrenees", "bernese", "bloodhound",
-    "akita", "alaskan",
+    "rottweiler", "boxer", "doberman", "vizsla", "weimaraner",
+    "collie", "cattle dog", "heeler", "bloodhound", "akita", "alaskan",
+    "dalmatian", "standard poodle", "australian shepherd", "border collie",
+    "irish setter", "english setter", "pointer", "flat-coated",
+}
+_XLARGE_BREED_KEYWORDS = {
+    "mastiff", "great dane", "saint bernard", "newfoundland",
+    "great pyrenees", "bernese", "cane corso", "leonberger",
+    "anatolian", "tibetan mastiff", "irish wolfhound", "scottish deerhound",
 }
 _HIGH_ENERGY_KEYWORDS = {
     "husky", "cattle", "heeler", "collie", "malinois", "retriever",
@@ -31,7 +42,7 @@ _LOW_ENERGY_KEYWORDS = {
     "shih tzu", "pug",
 }
 
-_MONTHLY_COST = {"small": 130, "medium": 175, "large": 215}
+_MONTHLY_COST = {"toy": 110, "small": 130, "medium": 175, "large": 215, "xlarge": 250}
 
 _ANIMAL_FIELDS = [
     "animalID", "animalName", "animalBreed", "animalBirthdate",
@@ -137,10 +148,14 @@ def _extract_house_trained(text: str) -> Optional[str]:
 
 def _estimate_size(breed: str) -> str:
     b = (breed or "").lower()
-    if any(k in b for k in _SMALL_BREED_KEYWORDS):
-        return "small"
+    if any(k in b for k in _XLARGE_BREED_KEYWORDS):
+        return "xlarge"
     if any(k in b for k in _LARGE_BREED_KEYWORDS):
         return "large"
+    if any(k in b for k in _TOY_BREED_KEYWORDS):
+        return "toy"
+    if any(k in b for k in _SMALL_BREED_KEYWORDS):
+        return "small"
     return "medium"
 
 
