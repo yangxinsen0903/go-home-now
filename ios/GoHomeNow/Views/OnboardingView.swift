@@ -4,12 +4,13 @@ private struct SizeOption {
     let id: String
     let label: String
     let iconSize: CGFloat
+    let tileHeight: CGFloat
 }
 
 private let sizeOptions: [SizeOption] = [
-    SizeOption(id: "small",  label: "Small",  iconSize: 20),
-    SizeOption(id: "medium", label: "Medium", iconSize: 30),
-    SizeOption(id: "large",  label: "Large",  iconSize: 42),
+    SizeOption(id: "small",  label: "Small",  iconSize: 22, tileHeight: 84),
+    SizeOption(id: "medium", label: "Medium", iconSize: 34, tileHeight: 104),
+    SizeOption(id: "large",  label: "Large",  iconSize: 50, tileHeight: 128),
 ]
 
 struct OnboardingView: View {
@@ -61,20 +62,24 @@ struct OnboardingView: View {
                         Text("Select all sizes you're open to — leave blank for any")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        HStack(spacing: 10) {
+                        // Bottom-aligned tiles of increasing height → visually distinct sizes
+                        HStack(spacing: 10, alignment: .bottom) {
                             ForEach(sizeOptions, id: \.id) { opt in
                                 let selected = vm.profile.preferredSizes.contains(opt.id)
                                 Button(action: { vm.profile.toggleSize(opt.id) }) {
-                                    VStack(spacing: 8) {
+                                    VStack(spacing: 0) {
+                                        Spacer(minLength: 0)
                                         Image(systemName: "dog.fill")
                                             .font(.system(size: opt.iconSize))
                                             .foregroundStyle(selected ? Color.white : Color.accentColor)
                                         Text(opt.label)
-                                            .font(.subheadline).fontWeight(.semibold)
+                                            .font(.caption).fontWeight(.semibold)
                                             .foregroundStyle(selected ? Color.white : Color.primary)
+                                            .padding(.top, 6)
+                                            .padding(.bottom, 10)
                                     }
                                     .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 16)
+                                    .frame(height: opt.tileHeight)
                                     .background(selected ? Color.accentColor : Color(.systemGray5))
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
