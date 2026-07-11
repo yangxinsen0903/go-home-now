@@ -1,11 +1,15 @@
 import SwiftUI
 
-private let sizeOptions: [(id: String, label: String, hint: String)] = [
-    ("toy",    "Toy",     "e.g. Chihuahua"),
-    ("small",  "Small",   "e.g. Beagle"),
-    ("medium", "Medium",  "e.g. Border Collie"),
-    ("large",  "Large",   "e.g. Labrador"),
-    ("xlarge", "X-Large", "e.g. Great Dane"),
+private struct SizeOption {
+    let id: String
+    let label: String
+    let iconSize: CGFloat
+}
+
+private let sizeOptions: [SizeOption] = [
+    SizeOption(id: "small",  label: "Small",  iconSize: 20),
+    SizeOption(id: "medium", label: "Medium", iconSize: 30),
+    SizeOption(id: "large",  label: "Large",  iconSize: 42),
 ]
 
 struct OnboardingView: View {
@@ -54,37 +58,25 @@ struct OnboardingView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Dog Size")
                             .font(.headline)
-                        Text("Select all sizes you're open to — leave blank for any size")
+                        Text("Select all sizes you're open to — leave blank for any")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        LazyVGrid(
-                            columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())],
-                            spacing: 8
-                        ) {
+                        HStack(spacing: 10) {
                             ForEach(sizeOptions, id: \.id) { opt in
+                                let selected = vm.profile.preferredSizes.contains(opt.id)
                                 Button(action: { vm.profile.toggleSize(opt.id) }) {
-                                    VStack(spacing: 2) {
+                                    VStack(spacing: 8) {
+                                        Image(systemName: "dog.fill")
+                                            .font(.system(size: opt.iconSize))
+                                            .foregroundStyle(selected ? Color.white : Color.accentColor)
                                         Text(opt.label)
                                             .font(.subheadline).fontWeight(.semibold)
-                                        Text(opt.hint)
-                                            .font(.caption2)
-                                            .foregroundStyle(
-                                                vm.profile.preferredSizes.contains(opt.id) ? Color.white.opacity(0.8) : Color.secondary
-                                            )
+                                            .foregroundStyle(selected ? Color.white : Color.primary)
                                     }
                                     .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                                    .background(
-                                        vm.profile.preferredSizes.contains(opt.id)
-                                        ? Color.accentColor
-                                        : Color(.systemGray5)
-                                    )
-                                    .foregroundStyle(
-                                        vm.profile.preferredSizes.contains(opt.id)
-                                        ? Color.white
-                                        : Color.primary
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.vertical, 16)
+                                    .background(selected ? Color.accentColor : Color(.systemGray5))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                                 }
                                 .buttonStyle(.plain)
                             }
