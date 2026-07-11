@@ -8,14 +8,11 @@ from typing import Optional
 router = APIRouter(prefix="/api/matches", tags=["matches"])
 
 ENERGY_LEVELS = ["low", "moderate", "high"]
-SIZE_LEVELS = ["toy", "small", "medium", "large", "xlarge"]
 EXPERIENCE_MAX_ENERGY = {"first-time": "moderate", "some": "high", "experienced": "high"}
 
 
 def compute_fit_score(dog: Dog, home_type: str, monthly_budget: int,
-                      activity_level: str, experience: str,
-                      preferred_sizes: Optional[list[str]] = None,
-                      preferred_age: Optional[str] = None) -> int:
+                      activity_level: str, experience: str) -> int:
     score = 0
 
     # Budget (30 pts)
@@ -42,24 +39,6 @@ def compute_fit_score(dog: Dog, home_type: str, monthly_budget: int,
     max_ok_idx = ENERGY_LEVELS.index(max_ok)
     if dog_idx <= max_ok_idx:
         score += 20
-
-    # Size preference (10 pts) — no preference = no effect
-    if preferred_sizes:
-        dog_size_idx = SIZE_LEVELS.index(dog.size) if dog.size in SIZE_LEVELS else 2
-        if dog.size in preferred_sizes:
-            score += 10
-        else:
-            for ps in preferred_sizes:
-                ps_idx = SIZE_LEVELS.index(ps) if ps in SIZE_LEVELS else 2
-                if abs(dog_size_idx - ps_idx) == 1:
-                    score += 5
-                    break
-
-    # Age preference (5 pts) — no preference = no effect
-    if preferred_age == "puppy" and dog.age == 0:
-        score += 5
-    elif preferred_age == "adult" and dog.age >= 1:
-        score += 5
 
     return min(score, 100)
 
@@ -112,6 +91,12 @@ def get_matches(req: MatchRequest, db: Session = Depends(get_db)):
     query = db.query(Dog)
     if req.location:
         query = query.filter(Dog.city == req.location)
+    if req.preferred_sizes:
+        query = query.filter(Dog.size.in_(req.preferred_sizes))
+    if req.preferred_age == "puppy":
+        query = query.filter(Dog.age == 0)
+    elif req.preferred_age == "adult":
+        query = query.filter(Dog.age >= 1)
     dogs = query.all()
 
     results = []
@@ -119,7 +104,6 @@ def get_matches(req: MatchRequest, db: Session = Depends(get_db)):
         score = compute_fit_score(
             dog, req.home_type, req.monthly_budget,
             req.activity_level, req.experience,
-            req.preferred_sizes, req.preferred_age,
         )
         results.append({
             **{c.name: getattr(dog, c.name) for c in dog.__table__.columns},
