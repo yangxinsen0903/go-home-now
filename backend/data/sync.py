@@ -2,9 +2,12 @@ from database import SessionLocal
 from models.dog import Dog
 from services.rescuegroups import fetch_all_dogs
 
+# Each entry maps one or more US state codes to a city label.
+# Multi-state entries (e.g. DMV = DC + MD + VA) are fetched together so
+# that the stale-deletion pass sees the full combined live set.
 SEARCH_TARGETS = [
-    {"state": "DC", "city": "dc"},
-    {"state": "NY", "city": "nyc"},
+    {"states": ["DC", "MD", "VA"], "city": "dc"},   # DMV metro area
+    {"states": ["NY"],             "city": "nyc"},
 ]
 
 
@@ -23,12 +26,15 @@ def sync_from_rescuegroups() -> dict:
     try:
         for target in SEARCH_TARGETS:
             city = target["city"]
-            try:
-                live_dogs = fetch_all_dogs(target["state"], city)
-            except Exception as e:
-                errors.append(f"{city}: {e}")
-                continue
+            # Aggregate dogs from all states for this city
+            all_live_dogs: list[dict] = []
+            for state in target["states"]:
+                try:
+                    all_live_dogs.extend(fetch_all_dogs(state, city))
+                except Exception as e:
+                    errors.append(f"{city}/{state}: {e}")
 
+            live_dogs = all_live_dogs
             live_ids = {d["external_id"] for d in live_dogs if d.get("external_id")}
 
             # Upsert

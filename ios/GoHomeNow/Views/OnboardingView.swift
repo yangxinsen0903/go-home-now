@@ -113,7 +113,7 @@ struct OnboardingView: View {
                         set: { vm.profile.location = $0 == "all" ? nil : $0 }
                     )) {
                         Text("All cities").tag("all")
-                        Text("Washington D.C.").tag("dc")
+                        Text("DMV Area").tag("dc")
                         Text("New York City").tag("nyc")
                     }
                     .pickerStyle(.segmented)
