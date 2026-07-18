@@ -1,19 +1,7 @@
 import SwiftUI
 
-// MARK: - Size options
-
-private struct SizeOption {
-    let id: String
-    let label: String
-    let imageName: String
-    let iconHeight: CGFloat
-    let tileHeight: CGFloat
-}
-
-private let sizeOptions: [SizeOption] = [
-    SizeOption(id: "small",  label: "Small",  imageName: "DogSmall",  iconHeight: 38, tileHeight: 88),
-    SizeOption(id: "medium", label: "Medium", imageName: "DogMedium", iconHeight: 52, tileHeight: 110),
-    SizeOption(id: "large",  label: "Large",  imageName: "DogLarge",  iconHeight: 68, tileHeight: 132),
+private let sizeChoices: [(id: String, label: String)] = [
+    ("small", "Small"), ("medium", "Medium"), ("large", "Large"),
 ]
 
 // MARK: - OnboardingView
@@ -60,42 +48,25 @@ struct OnboardingView: View {
                     .pickerStyle(.segmented)
                 }
 
-                Section {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Dog Size")
-                            .font(.headline)
-                        Text("Select all sizes you're open to — leave blank for any")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        HStack(alignment: .bottom, spacing: 10) {
-                            ForEach(sizeOptions, id: \.id) { opt in
-                                let selected = vm.profile.preferredSizes.contains(opt.id)
-                                let iconColor: Color = selected ? .white : .accentColor
-                                Button(action: { vm.profile.toggleSize(opt.id) }) {
-                                    VStack(spacing: 0) {
-                                        Spacer(minLength: 0)
-                                        Image(opt.imageName)
-                                            .resizable()
-                                            .renderingMode(.template)
-                                            .scaledToFit()
-                                            .foregroundStyle(iconColor)
-                                            .frame(height: opt.iconHeight)
-                                        Text(opt.label)
-                                            .font(.caption).fontWeight(.semibold)
-                                            .foregroundStyle(selected ? Color.white : Color.primary)
-                                            .padding(.top, 8)
-                                            .padding(.bottom, 12)
-                                    }
+                Section("Dog Size") {
+                    Text("Select all you're open to — leave blank for any")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    HStack(spacing: 10) {
+                        ForEach(sizeChoices, id: \.id) { choice in
+                            let selected = vm.profile.preferredSizes.contains(choice.id)
+                            Button(action: { vm.profile.toggleSize(choice.id) }) {
+                                Text(choice.label)
+                                    .font(.subheadline).fontWeight(.semibold)
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: opt.tileHeight)
+                                    .padding(.vertical, 10)
                                     .background(selected ? Color.accentColor : Color(.systemGray5))
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                                }
-                                .buttonStyle(.plain)
+                                    .foregroundStyle(selected ? Color.white : Color.primary)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
+                            .buttonStyle(.plain)
                         }
                     }
-                    .padding(.vertical, 4)
                 }
 
                 Section("Age Preference") {
