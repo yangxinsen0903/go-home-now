@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		011EA411BDA173640EB0E96C /* GoHomeNow.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoHomeNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		011EA411BDA173640EB0E96C /* GoHomeNow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoHomeNow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoHomeNowApp.swift; sourceTree = "<group>"; };
 		0F370B0B15C3A047FF788A1B /* Dog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dog.swift; sourceTree = "<group>"; };
 		453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogDetailView.swift; sourceTree = "<group>"; };
@@ -129,7 +129,6 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					322ECE5BBC7C93E76EC0BEFF = {
-						DevelopmentTeam = Q24QG37Q66;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -262,7 +261,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangxinsen.GoHomeNow;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -282,7 +281,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangxinsen.GoHomeNow;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
