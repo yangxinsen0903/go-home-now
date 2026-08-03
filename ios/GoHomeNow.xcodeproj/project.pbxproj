@@ -16,6 +16,11 @@
 		9DE6EF8968ECE0BA406270E3 /* GoHomeNowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */; };
 		9E950E1448DDFC70D859824F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1903DBCB7C929277C0A39DA /* Assets.xcassets */; };
 		CD03868131EA8D8110714C23 /* DogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE48D9214B6F3EA7801813B /* DogListView.swift */; };
+		D2683CEE40EF7CFE8DB8CF0A /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EE1459630296C2CD79090D /* FavoritesView.swift */; };
+		D9FB020CC6BD75A51EF2C0FD /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55356310D69883CEE0AC6206 /* AccountView.swift */; };
+		14A2A547CDD9278D025DDF7C /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CBDA0756460B32222D0D7D /* RootTabView.swift */; };
+		8D56B7F957998D62D90A15DD /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B5A9C0F3CE466B864ED6DB /* SplashView.swift */; };
+		A293796934D2FA365481834C /* Color+Brand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A3859320962B2A21FC7C466 /* Color+Brand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +35,11 @@
 		EAE48D9214B6F3EA7801813B /* DogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogListView.swift; sourceTree = "<group>"; };
 		ED2FDDE8878E1FD852C089C0 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		F44885BC992F7AF692DE45D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E4EE1459630296C2CD79090D /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		55356310D69883CEE0AC6206 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		B1CBDA0756460B32222D0D7D /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		B6B5A9C0F3CE466B864ED6DB /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		6A3859320962B2A21FC7C466 /* Color+Brand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Brand.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -47,6 +57,10 @@
 				453C28D3DDC1A2335F5FC697 /* DogDetailView.swift */,
 				EAE48D9214B6F3EA7801813B /* DogListView.swift */,
 				D564DF70D50F2BFF3EA3AFA6 /* OnboardingView.swift */,
+				E4EE1459630296C2CD79090D /* FavoritesView.swift */,
+				55356310D69883CEE0AC6206 /* AccountView.swift */,
+				B1CBDA0756460B32222D0D7D /* RootTabView.swift */,
+				B6B5A9C0F3CE466B864ED6DB /* SplashView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -63,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				A1903DBCB7C929277C0A39DA /* Assets.xcassets */,
+				96405C0B2D51CA58502F230A /* Extensions */,
 				0B873465645E22C8AB224E4D /* GoHomeNowApp.swift */,
 				F44885BC992F7AF692DE45D7 /* Info.plist */,
 				C1F075BBFD59DB4701D1593B /* Models */,
@@ -96,6 +111,14 @@
 				7D0B2C3E81B233E85E0542A1 /* UserProfile.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		96405C0B2D51CA58502F230A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6A3859320962B2A21FC7C466 /* Color+Brand.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +199,11 @@
 				9DE6EF8968ECE0BA406270E3 /* GoHomeNowApp.swift in Sources */,
 				1553F238232B71433AAC1841 /* OnboardingView.swift in Sources */,
 				9B80FD3C7BF7CA3FC5A8CF46 /* UserProfile.swift in Sources */,
+				D2683CEE40EF7CFE8DB8CF0A /* FavoritesView.swift in Sources */,
+				D9FB020CC6BD75A51EF2C0FD /* AccountView.swift in Sources */,
+				14A2A547CDD9278D025DDF7C /* RootTabView.swift in Sources */,
+				8D56B7F957998D62D90A15DD /* SplashView.swift in Sources */,
+				A293796934D2FA365481834C /* Color+Brand.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

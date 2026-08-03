@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct DogDetailView: View {
+    @EnvironmentObject var vm: AppViewModel
     let dog: Dog
     @State private var showShelterSheet = false
     @State private var showAdoptedConfirm = false
@@ -21,11 +22,19 @@ struct DogDetailView: View {
                             .font(.caption).foregroundStyle(.secondary)
                     }
                     Spacer()
-                    if let score = dog.fitScore {
-                        VStack {
-                            Text("\(score)%").font(.title).bold()
-                                .foregroundStyle(score >= 85 ? .green : score >= 70 ? .orange : .red)
-                            Text("GoHome Fit").font(.caption2).foregroundStyle(.secondary)
+                    VStack(alignment: .trailing, spacing: 10) {
+                        Button(action: { vm.toggleFavorite(dog) }) {
+                            Image(systemName: vm.isFavorite(dog) ? "heart.fill" : "heart")
+                                .font(.title2)
+                                .foregroundStyle(vm.isFavorite(dog) ? .red : .secondary)
+                        }
+                        .buttonStyle(.plain)
+                        if let score = dog.fitScore {
+                            VStack {
+                                Text("\(score)%").font(.title).bold()
+                                    .foregroundStyle(score >= 85 ? .green : score >= 70 ? .orange : .red)
+                                Text("GoHome Fit").font(.caption2).foregroundStyle(.secondary)
+                            }
                         }
                     }
                 }

@@ -44,9 +44,6 @@ struct DogListView: View {
             }
             .navigationTitle("Your Matches")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Edit Profile") { vm.onboardingDone = false }
-                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { Task { await vm.fetchMatches() } }) {
                         Image(systemName: "arrow.clockwise")
@@ -58,6 +55,7 @@ struct DogListView: View {
 }
 
 struct DogCardView: View {
+    @EnvironmentObject var vm: AppViewModel
     let dog: Dog
 
     var body: some View {
@@ -94,6 +92,12 @@ struct DogCardView: View {
                     .lineLimit(1)
                 Text("$\(dog.monthlyCost)/mo").font(.caption2).foregroundStyle(.secondary)
             }
+            Spacer(minLength: 0)
+            Button(action: { vm.toggleFavorite(dog) }) {
+                Image(systemName: vm.isFavorite(dog) ? "heart.fill" : "heart")
+                    .foregroundStyle(vm.isFavorite(dog) ? .red : .secondary)
+            }
+            .buttonStyle(.plain)
         }
         .padding(.vertical, 4)
     }
