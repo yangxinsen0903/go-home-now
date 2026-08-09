@@ -20,7 +20,7 @@ struct GoHomeNowApp: App {
                 }
             }
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
                     withAnimation(.easeOut(duration: 0.3)) { showSplash = false }
                 }
             }
