@@ -1,53 +1,51 @@
 import SwiftUI
 
-struct DogListView: View {
+struct MatchResultsView: View {
     @EnvironmentObject var vm: AppViewModel
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if vm.isLoading {
-                    ProgressView("Finding your matches…")
-                } else if let error = vm.errorMessage {
-                    VStack(spacing: 12) {
-                        Text(error).foregroundStyle(.secondary)
-                        Button("Retry") { Task { await vm.fetchMatches() } }
-                    }
-                } else if vm.dogs.isEmpty {
-                    VStack(spacing: 16) {
-                        Image(systemName: "pawprint.slash")
-                            .font(.system(size: 52))
-                            .foregroundStyle(.secondary)
-                        Text("No matches found")
-                            .font(.title3).bold()
-                        Text("No dogs currently match your size or age filters.\nTry adjusting your preferences.")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                        Button("Adjust Filters") { vm.onboardingDone = false }
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(Color.accentColor)
-                            .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                    }
-                    .padding(.horizontal, 32)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
-                    List(vm.dogs) { dog in
-                        NavigationLink(destination: DogDetailView(dog: dog)) {
-                            DogCardView(dog: dog)
-                        }
-                    }
-                    .listStyle(.plain)
+        Group {
+            if vm.isLoading {
+                ProgressView("Finding your matches…")
+            } else if let error = vm.errorMessage {
+                VStack(spacing: 12) {
+                    Text(error).foregroundStyle(.secondary)
+                    Button("Retry") { Task { await vm.fetchMatches() } }
                 }
-            }
-            .navigationTitle("Your Matches")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { Task { await vm.fetchMatches() } }) {
-                        Image(systemName: "arrow.clockwise")
+            } else if vm.dogs.isEmpty {
+                VStack(spacing: 16) {
+                    Image(systemName: "pawprint.slash")
+                        .font(.system(size: 52))
+                        .foregroundStyle(.secondary)
+                    Text("No matches found")
+                        .font(.title3).bold()
+                    Text("No dogs currently match your size or age filters.\nTry adjusting your preferences.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                    Button("Adjust Filters") { vm.onboardingDone = false }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(Color.accentColor)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .padding(.horizontal, 32)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List(vm.dogs) { dog in
+                    NavigationLink(destination: DogDetailView(dog: dog)) {
+                        DogCardView(dog: dog)
                     }
+                }
+                .listStyle(.plain)
+            }
+        }
+        .navigationTitle("Your Matches")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { Task { await vm.fetchMatches() } }) {
+                    Image(systemName: "arrow.clockwise")
                 }
             }
         }

@@ -28,7 +28,7 @@ struct RootTabView: View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selectedTab {
-                case .home: DogListView()
+                case .home: HomeView()
                 case .favorites: FavoritesView()
                 case .account: AccountView()
                 }

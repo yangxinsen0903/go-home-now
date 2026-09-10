@@ -6,6 +6,13 @@ struct AccountView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section {
+                    LabeledContent("Email", value: vm.accountEmail ?? "—")
+                    if let name = vm.accountName, !name.isEmpty {
+                        LabeledContent("Name", value: name)
+                    }
+                }
+
                 Section("Adoption Preferences") {
                     LabeledContent("Home Type", value: vm.profile.homeType.capitalized)
                     LabeledContent("Monthly Budget", value: "$\(vm.profile.monthlyBudget)")
@@ -24,6 +31,10 @@ struct AccountView: View {
                     Button("Edit Preferences") { vm.onboardingDone = false }
                 } footer: {
                     Text("These preferences power your GoHome Fit matches. Keeping them current helps us find dogs that fit your life.")
+                }
+
+                Section {
+                    Button("Log Out", role: .destructive) { vm.logout() }
                 }
             }
             .navigationTitle("Account")

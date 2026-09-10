@@ -8,7 +8,9 @@ struct GoHomeNowApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if vm.onboardingDone {
+                if !vm.isAuthenticated {
+                    AuthView().environmentObject(vm)
+                } else if vm.onboardingDone {
                     RootTabView().environmentObject(vm)
                 } else {
                     OnboardingView().environmentObject(vm)
@@ -20,6 +22,7 @@ struct GoHomeNowApp: App {
                 }
             }
             .onAppear {
+                Task { await vm.restoreSession() }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
                     withAnimation(.easeOut(duration: 0.3)) { showSplash = false }
                 }

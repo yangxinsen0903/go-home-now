@@ -5,10 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from database import engine
-from models import Dog, UserProfile
+from models import Dog, UserProfile, Account
 import models
 from database import Base
-from routes import dogs, matches
+from routes import dogs, matches, auth, profile
 from routes.admin import router as admin_router
 from data.seed import seed
 
@@ -20,6 +20,13 @@ with engine.connect() as conn:
                     "good_with TEXT", "neutered TEXT", "vaccinated TEXT", "house_trained TEXT"]:
         try:
             conn.execute(text(f"ALTER TABLE dogs ADD COLUMN {col_def}"))
+            conn.commit()
+        except Exception:
+            pass  # Column already present
+
+    for col_def in ["account_id INTEGER", "preferred_sizes TEXT", "preferred_age TEXT"]:
+        try:
+            conn.execute(text(f"ALTER TABLE user_profiles ADD COLUMN {col_def}"))
             conn.commit()
         except Exception:
             pass  # Column already present
@@ -37,6 +44,8 @@ app.add_middleware(
 
 app.include_router(dogs.router)
 app.include_router(matches.router)
+app.include_router(auth.router)
+app.include_router(profile.router)
 app.include_router(admin_router)
 
 

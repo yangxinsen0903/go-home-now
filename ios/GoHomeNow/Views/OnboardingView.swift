@@ -94,8 +94,7 @@ struct OnboardingView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("See Matches") {
-                        vm.onboardingDone = true
-                        Task { await vm.fetchMatches() }
+                        Task { await vm.completeOnboarding() }
                     }
                 }
             }
